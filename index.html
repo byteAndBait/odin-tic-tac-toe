@@ -4,10 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/normalize.css">
 </head>
 <body>
-    
+    <dialog class="players-names-dialog">
+        <form onsubmit="event.preventDefault()">
+            <p>
+                <input type="text" name="o-player-name" id="o-player-name">
+                <label for="o-player-name">
+                    Player name for O
+                </label>
+            </p>
+            
+            <p>
+                <input type="text" name="x-player-name" id="o-player-name">
+                <label for="x-player-name">
+                    Player name for X
+                </label>
+            </p>
+            <p>
+                <input type="submit" value="Play!">
+            </p>
+        </form>
+    </dialog>
+    <div class="game"></div>
 </body>
 </html>
 
   <script src="script.js"></script>
+
+  <!-- 
+  
+    user story
+    user will input the names of the players in a dialog
+    dialog ends then the layout is shown
+    the name of the player and its mark should be shown on top revealing who's playing preferably a .status element
+    when the game ends the win or tie will be output in .status
+    a button to reset the game with the same names should appear at the bottom
+
+
+
+
+
+
+
+
+
+
+
+
+
+  -->
