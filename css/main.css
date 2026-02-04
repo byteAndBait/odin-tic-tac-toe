@@ -25,3 +25,25 @@ dialog{
 dialog::backdrop{
     background-color: rgba(0, 0, 0, 0.37);
 }
+
+
+/* Layout Styling */
+.layout{
+    border: solid 1px black;
+    
+}
+.layout .row{
+    display: flex;
+}
+.layout .row .column {
+    padding: 40px;
+    font-size: 2rem;
+    background-color: rgb(173, 173, 255);
+    border:solid 1px black;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}

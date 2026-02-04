@@ -9,16 +9,16 @@
 </head>
 <body>
     <dialog class="players-names-dialog">
-        <form onsubmit="event.preventDefault()">
+        <form onsubmit="event.preventDefault()" id="players-names-form">
             <p>
-                <input type="text" name="o-player-name" id="o-player-name">
+                <input type="text" name="o-player-name" value="John" id="o-player-name" required placeholder="e.g John">
                 <label for="o-player-name">
                     Player name for O
                 </label>
             </p>
             
             <p>
-                <input type="text" name="x-player-name" id="o-player-name">
+                <input type="text" name="x-player-name" value="Micah" id="x-player-name" required placeholder="e.g Arthur">
                 <label for="x-player-name">
                     Player name for X
                 </label>
@@ -28,7 +28,11 @@
             </p>
         </form>
     </dialog>
-    <div class="game"></div>
+    <div class="game">
+        <div class="status">
+            Waiting for the game to start
+        </div>
+    </div>
 </body>
 </html>
 
