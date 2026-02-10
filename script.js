@@ -16,13 +16,7 @@ const ticTacToeGame = (() => {
     const getBoard = () => board;
     return { resetBoard, getBoard };
   });
-/* 
-first turn should be player one turn
-you hit play round you have the player who played it
-you want to say that the next is the other player
 
-
-*/
   const GameController = ((playerOneName, playerTwoName) => {
     const board = GameBoard()
     const players = [Player(playerOneName, "O"), Player(playerTwoName, "X")]
@@ -151,25 +145,26 @@ get the names from the dialog
 
 
 const displayController = (() => {
-  const dialog = document.querySelector(".players-names-dialog")
+  const dialog = document.querySelector(".playersNamesDialog")
   dialog.showModal()
-  const form = dialog.querySelector("#players-names-form");
+  const form = dialog.querySelector("#playersNamesForm");
   let statusElement = document.querySelector(".status");
   let gameElement = document.querySelector(".game")
   let game = ticTacToeGame().GameController("O","X");
-
-  const formHandler = ()=>{
+  document.querySelector(".resetButton").addEventListener("click",()=>{
+    game.resetBoard()
+    screenUpdate()
+    statusElement.textContent =
+     `${form.querySelector("#oPlayerName").value}'s Turn ➡️ `
+  })
+  const formHandler = ()=>{ 
   form.addEventListener("submit", (event) => {
     event.preventDefault();
-    let playerOneName = form.querySelector("#o-player-name").value
-    let playerTwoName = form.querySelector("#x-player-name").value
+    let playerOneName = form.querySelector("#oPlayerName").value
+    let playerTwoName = form.querySelector("#xPlayerName").value
     game =  ticTacToeGame().GameController(playerOneName,playerTwoName)
     statusElement.textContent =
-     `Players configured:
-        ${playerOneName} — (⭕)
-        ${playerTwoName} — (❌)
-        Player ${playerOneName}'s Turn ➡️
-        `
+     `${playerOneName}'s Turn ➡️ `
     dialog.close()
     screenUpdate()
   })
