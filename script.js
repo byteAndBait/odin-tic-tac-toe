@@ -11,7 +11,6 @@ const ticTacToeGame = (() => {
     ];
     const resetBoard = () => {
       board.forEach((e) => { e[0] = e[1] = e[2] = "" });
-
     };
     const getBoard = () => board;
     return { resetBoard, getBoard };
@@ -22,17 +21,16 @@ const ticTacToeGame = (() => {
     const players = [Player(playerOneName, "O"), Player(playerTwoName, "X")]
     let activePlayer = players[0];
 
-
-
     const getBoard = () => board.getBoard()
     const mutateBoard = (pos) => {
       // for example pos=13, row one and column three
       board.getBoard()[pos[0]][pos[1]] = activePlayer.mark
     };
-    const switchPlayerTurn = ()=>{
+    const switchTurns = ()=>{
       activePlayer = activePlayer == players[0] ? players[1] : players[0];
+      
     }
-    function playRound(pos) { // example: 21 : second row first column
+    function playRound(pos) {
       if (!(players[0].name || players[1].name)) {
         return "Players have not been configured. Please set player names. ⚠️"
       }
@@ -44,10 +42,11 @@ const ticTacToeGame = (() => {
       } else {
         return "Cell is already occupied. Please select another cell. ❌"
       }
-      switchPlayerTurn()
+      switchTurns(  )
       return {
         status: checkWinAndTie(),
-        player: activePlayer
+        activePlayer: activePlayer,
+        previousPlayer: activePlayer == players[0] ? players[1] : players[0]
       }
 
     }
@@ -133,42 +132,33 @@ const consoleController = (() => {
   return { playRound, resetBoard };
 })
 
-
-/*
-
-get the names from the dialog
-  get the IDs of the two inputs
-  init the gamecontroller with the names
-
-
-*/
-
-
 const displayController = (() => {
   const dialog = document.querySelector(".playersNamesDialog")
   dialog.showModal()
   const form = dialog.querySelector("#playersNamesForm");
   let statusElement = document.querySelector(".status");
-  let gameElement = document.querySelector(".game")
-  let game = ticTacToeGame().GameController("O","X");
+  let gameElement = document.querySelector(".game");
+  let playerOneName,playerTwoName,game;
+
   document.querySelector(".resetButton").addEventListener("click",()=>{
     game.resetBoard()
     screenUpdate()
     statusElement.textContent =
-     `${form.querySelector("#oPlayerName").value}'s Turn ➡️ `
+     `${playerOneName}'s Turn ➡️ `
   })
   const formHandler = ()=>{ 
   form.addEventListener("submit", (event) => {
     event.preventDefault();
-    let playerOneName = form.querySelector("#oPlayerName").value
-    let playerTwoName = form.querySelector("#xPlayerName").value
+    playerOneName = form.querySelector("#oPlayerName").value
+    playerTwoName = form.querySelector("#xPlayerName").value
     game =  ticTacToeGame().GameController(playerOneName,playerTwoName)
     statusElement.textContent =
      `${playerOneName}'s Turn ➡️ `
     dialog.close()
-    screenUpdate()
+    screenUpdate() // Initilization
   })
   }
+
   formHandler()
 
   const screenUpdate = ()=>{
@@ -199,15 +189,14 @@ const displayController = (() => {
           screenUpdate()
         if(output.status){
           let layout = document.querySelector(".layout");
-          output.player.mark == "X" ? output.player.mark = "O" : output.player.mark = "X" // Get the previous player 
-          output.status === "TIE" ? statusElement.textContent = "Game ended in a tie 🤝" : statusElement.textContent = `Player ${output.player.name} (${output.status}) has won 🎉`;
+          output.status === "TIE" ? statusElement.textContent = "Game ended in a tie 🤝" : statusElement.textContent = `Player ${output.previousPlayer.name} (${output.status}) has won 🎉`;
           layout.style.cursor = "not-allowed"
           layout.replaceWith(layout.cloneNode(true))
         }else{
           if(typeof output === "string"){
             statusElement.textContent = output
           }else{
-            statusElement.textContent = `Player ${output.player.name}'s (${output.player.mark}) Turn ➡️`
+            statusElement.textContent = `Player ${output.activePlayer.name}'s (${output.activePlayer.mark}) Turn ➡️`
           }
         }
         
@@ -218,39 +207,3 @@ const displayController = (() => {
 })
 
 displayController()
-
-// let consoleModule = consoleController()
-// --- HORIZONTAL WIN ---
-// consoleModule.playRound("00"); // O
-// consoleModule.playRound("10"); // X
-// consoleModule.playRound("01"); // O
-// consoleModule.playRound("11"); // X
-// consoleModule.playRound("02"); // O (Wins)
-
-// // --- VERTICAL WIN ---
-// console.log("TEST: Vertical Win");
-// consoleModule.playRound("00"); // O
-// consoleModule.playRound("01"); // X
-// consoleModule.playRound("10"); // O
-// consoleModule.playRound("11"); // X
-// consoleModule.playRound("20"); // O (Wins)
-
-// // --- DIAGONAL WIN ---
-// console.log("TEST: Diagonal Win");
-// consoleModule.playRound("00"); // O
-// consoleModule.playRound("01"); // X
-// consoleModule.playRound("11"); // O
-// consoleModule.playRound("02"); // X
-// consoleModule.playRound("22"); // O (Wins)
-
-// // --- TIE CASE ---
-// console.log("TEST: Tie Case");
-// consoleModule.playRound("00"); // O
-// consoleModule.playRound("01"); // X
-// consoleModule.playRound("02"); // O
-// consoleModule.playRound("11"); // X
-// consoleModule.playRound("10"); // O
-// consoleModule.playRound("12"); // X
-// consoleModule.playRound("21"); // O
-// consoleModule.playRound("20"); // X
-// consoleModule.playRound("22"); // O (Tie)
